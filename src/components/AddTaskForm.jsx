@@ -7,6 +7,7 @@ const AddTaskForm = (props) => {
         addTask,
         newTaskTitle,
         setNewTaskTitle,
+        ref,
     } = props
 
     const onSubmit = (event) => {
@@ -21,6 +22,7 @@ const AddTaskForm = (props) => {
                 id="new-task"
                 value={newTaskTitle}
                 onInput={(event) => {setNewTaskTitle(event.target.value)}}
+                ref={ref}
             />
             <Button type="submit"> Add </Button>
       </form>

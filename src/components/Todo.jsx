@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import AddTaskForm from './AddTaskForm'
 import SearchTaskForm from './SearchTaskForm'
 import TodoInfo from './TodoInfo'
@@ -17,6 +17,7 @@ const Todo = () => {
     )
 
     const [newTaskTitle, setNewTaskTitle] = useState('')
+    const newTaskInputRef = useRef(null)
     const [searchQuery, setSearchQuery] = useState('')
 
     const deleteAllTasks = () => {
@@ -61,6 +62,9 @@ const Todo = () => {
         localStorage.setItem('tasks', JSON.stringify(tasks))
     }, [tasks])
 
+    useEffect(() => {
+        newTaskInputRef.current.focus()
+    }, [])
 
     const clearSearchQuery = searchQuery.trim().toLowerCase()
     const filterdTasks = clearSearchQuery.length > 0 
@@ -74,6 +78,7 @@ const Todo = () => {
             addTask={addTask}
             newTaskTitle={newTaskTitle}
             setNewTaskTitle={setNewTaskTitle}
+            ref={newTaskInputRef}
         />
         <SearchTaskForm 
         searchQuery={searchQuery}
