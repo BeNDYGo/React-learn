@@ -1,16 +1,23 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import AddTaskForm from './AddTaskForm'
 import SearchTaskForm from './SearchTaskForm'
 import TodoInfo from './TodoInfo'
 import Todolist from './Todolist'
 
 const Todo = () => {
-    const [tasks, setTasks] = useState([
-        {id: 'task-1', title: 'Задание - 1', isDone: false},
-        {id: 'task-2', title: 'Задание - 2', isDone: false}
-    ])
+    const [tasks, setTasks] = useState(() => {
+        const saveTasks = localStorage.getItem('tasks')
+        if (saveTasks) {
+            return JSON.parse(saveTasks)
+        }
+        return [{id: 'task-1', title: 'Задание - 1', isDone: false},
+                {id: 'task-2', title: 'Задание - 2', isDone: false}]
+    }
+    
+    )
 
     const [newTaskTitle, setNewTaskTitle] = useState('')
+    const [searchQuery, setSearchQuery] = useState('')
 
     const deleteAllTasks = () => {
         const isConfirmd = confirm('Del All?')
@@ -35,10 +42,6 @@ const Todo = () => {
         })
         )
     }
-    
-    const filterTasks = (query) => {
-        console.log(`поиск ${query}`)
-    }
 
     const addTask = () => {
         if (newTaskTitle.trim().length > 0) {
@@ -50,8 +53,19 @@ const Todo = () => {
 
             setTasks([...tasks, newTask])
             setNewTaskTitle('')
+            setSearchQuery('')
         }
     }
+    
+    useEffect(() => {
+        localStorage.setItem('tasks', JSON.stringify(tasks))
+    }, [tasks])
+
+
+    const clearSearchQuery = searchQuery.trim().toLowerCase()
+    const filterdTasks = clearSearchQuery.length > 0 
+    ? tasks.filter(({title}) => title.toLowerCase().includes(clearSearchQuery))
+    : null
 
     return(
     <div className="todo">
@@ -61,7 +75,10 @@ const Todo = () => {
             newTaskTitle={newTaskTitle}
             setNewTaskTitle={setNewTaskTitle}
         />
-        <SearchTaskForm onSearchInput={filterTasks}/>
+        <SearchTaskForm 
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        />
         <TodoInfo 
             total={tasks.length} 
             done={tasks.filter(({isDone}) => (isDone)).length}
@@ -69,6 +86,7 @@ const Todo = () => {
         />
         <Todolist 
             tasks={tasks}
+            filterdTasks={filterdTasks}
             onDeletTaskButtonClick={deletTask}
             onTaskCompliteCahge={toggleTaskComplite}
         />
