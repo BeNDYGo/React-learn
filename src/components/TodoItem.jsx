@@ -1,15 +1,20 @@
 import { memo } from "react"
+import { useContext } from "react"
+import { TasksContext } from "../context/TasksContext"
 
 const TodoItem = (props) => {
   console.log('TodoItem')
+
   const {
-    className = '',
+    className,
     id,
     title,
     isDone,
-    onDeletTaskButtonClick,
-    onTaskCompliteCahge,
   } = props
+  const {
+    deletTask,
+    toggleTaskComplite
+  } = useContext(TasksContext)
 
   return (
       <li className={`todo-item ${className}`}>
@@ -18,7 +23,7 @@ const TodoItem = (props) => {
           id={id}
           type="checkbox"
           checked={isDone}
-          onChange={(event) => {onTaskCompliteCahge(id, event.target.checked)}}
+          onChange={(event) => {toggleTaskComplite(id, event.target.checked)}}
         />
         <label
           className="todo-item__label"
@@ -30,7 +35,7 @@ const TodoItem = (props) => {
           className="todo-item__delete-button"
           aria-label="Delete"
           title="Delete"
-          onClick={() => {onDeletTaskButtonClick(id)}}
+          onClick={() => {deletTask(id)}}
         >
           <svg
             width="20"
