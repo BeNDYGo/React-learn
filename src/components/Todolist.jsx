@@ -1,6 +1,8 @@
 import TodoItem from './TodoItem'
+import {memo} from 'react'
 
 const Todolist = (props) => {
+  console.log('Todolist render')
   const {
     tasks = [],
     onDeletTaskButtonClick,
@@ -20,6 +22,7 @@ const Todolist = (props) => {
   if (hasTasks && isEmptyFilterdTasks) {
     return (<div className="todo__empty-message">not found</div>)
   }
+  
 
   return (
     <ul className="todo__list">
@@ -38,4 +41,4 @@ const Todolist = (props) => {
   )
 }
 
-export default Todolist
+export default memo(Todolist)
