@@ -55,7 +55,7 @@ const Todo = () => {
             setNewTaskTitle('')
             setSearchQuery('')
         }
-    }, [newTaskTitle, tasks])
+    }, [newTaskTitle])
     
     useEffect(() => {
         localStorage.setItem('tasks', JSON.stringify(tasks))
