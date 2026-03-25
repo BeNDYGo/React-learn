@@ -2,7 +2,6 @@ import AddTaskForm from './AddTaskForm'
 import SearchTaskForm from './SearchTaskForm'
 import TodoInfo from './TodoInfo'
 import Todolist from './Todolist'
-import { TasksContext } from '../context/TasksContext'
 
 const Todo = () => {
     return(
